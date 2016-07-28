@@ -56,6 +56,12 @@
             success: function (result) {
                 $('#results').load('/showResults/', result);
             },
+            error: function (textStatus, errorThrown) {
+                if(errorThrown !== 'abort') {
+                    var error_message = 'We are very sorry but our online pigeon didn\'t make it back with the data.<br><br>If this happens again please contact admin@vitali.london with the following error code: ' + textStatus.status;
+                    $('#results').html('<div class="alert alert-danger text-center" role="alert">' + error_message + '</div>');
+                }
+            },
             dataType: 'jsonp'
         });
 
