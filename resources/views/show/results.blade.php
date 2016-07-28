@@ -4,11 +4,9 @@
 			@foreach (Request::input('Search') as $film)
 				<tr>
 					<td>
-						Title: {{ $film['Title'] }}
+						Title: {{ $film['Title'] }} @if ($film['Type'] === 'series') (TV Series) @endif
 						<br>
 						Year: {{ $film['Year'] }}
-						<br>
-						Type: {{ $film['Type'] }}
 					</td>
 				</tr>
 			@endforeach
