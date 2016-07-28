@@ -47,10 +47,12 @@
             params_in_url_format = '?' + params_in_url_format;
         }
 
-
         $.ajax({
             type: 'GET',
             url: 'http://www.omdbapi.com/' + params_in_url_format,
+            beforeSend: function () {
+                $('#results').html('<div class="text-center"><span class="fa fa-circle-o-notch fa-spin fa-2x"></span></div>');
+            },
             success: function (result) {
                 $('#results').load('/showResults/', result);
             },
