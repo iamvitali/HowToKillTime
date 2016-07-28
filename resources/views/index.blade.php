@@ -10,7 +10,7 @@
             <div class="input-group">
                 <input id="iNameOrCode" type="text" class="form-control" placeholder="Type a name or an IMDB code" />
                 <span class="input-group-btn">
-                    <a id="bSearchForFilm" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;</a>
+                    <a id="bSearchForFilm" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                 </span>
             </div>
         </div>
@@ -47,13 +47,11 @@
             params_in_url_format = '?' + params_in_url_format;
         }
 
-        console.log(params_in_url_format);
 
         $.ajax({
             type: 'GET',
             url: 'http://www.omdbapi.com/' + params_in_url_format,
             success: function (result) {
-                console.log('result:', result);
                 $('#results').load('/showResults/', result);
             },
             dataType: 'jsonp'
