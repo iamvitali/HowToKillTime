@@ -12,6 +12,12 @@
 			@endforeach
 		</table>
 	</div>
+
+	@if (Request::input('totalResults') > 10)
+		<div class="text-center">
+			<div class="pagination"></div>
+		</div>
+	@endif
 @elseif (Request::input('Response') === 'False' && Request::input('Error') === 'Movie not found!')
 	<div class="alert alert-info text-center" role="alert">
 		Nothing found.
