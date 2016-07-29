@@ -67,7 +67,7 @@
                                 last: false, // hide "Last" navigation button
                                 startPage: page, // current page
                                 totalPages: Math.ceil(result.totalResults / items_per_page), // rounding up so 1.05 pages would become 2 pages
-                                visiblePages: 7,
+                                visiblePages: 6,
                                 onPageClick: function (event, pageToSwitchTo) {
                                     /* only call AJAX if we are trying to switch to a different page */
                                     if(page !== pageToSwitchTo) {
