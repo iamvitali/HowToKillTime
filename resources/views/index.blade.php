@@ -131,8 +131,14 @@
             var params = {};
             params.r    = 'json';
             params.v    = 1; // OMDb API version
-            params.s    = $('#iNameOrCode').val();
-            params.page = page;
+
+            var film_name_or_imdb_code = $.trim($('#iNameOrCode').val());
+            if(/^tt\d{7}$/.test(film_name_or_imdb_code)) {
+                params.i    = film_name_or_imdb_code; // searching by IMDb ID
+            } else {
+                params.s    = film_name_or_imdb_code; // searching by name
+                params.page = page;
+            }
 
             /* Security check that the provided type is allowed */
             if($.inArray($('#sDropdownMenuTypeSelectedOption').attr('data-selected-option'), ['movie', 'series', 'episode']) !== -1) {
@@ -168,6 +174,25 @@
                     },
                     success: function (result) {
                         if(page === 1) {
+                            /*
+                            * Check if imdbID is found in the response
+                            * If so this means the search was performed by IMDb ID and we only have one element
+                            * Because an array "Search" was not created we need to create it and add the single film to it
+                            * so that we don't have to change our HTML views
+                            */
+                            if(result.imdbID) {
+                                result['Search'] = [];
+                                result['Search'].push({
+                                    'Poster':   result.Poster,
+                                    'Title':    result.Title,
+                                    'Type':     result.Type,
+                                    'Year':     result.Year,
+                                    'imdbID':   result.imdbID,
+                                });
+
+                                result.totalResults = 1;
+                            }
+
                             $('#results').load('/showResults/', result, function () {
                                 /* check if there was anything found and there is more than 1 page */
                                 if(result.Response === 'True') {
