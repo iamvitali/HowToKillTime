@@ -10,6 +10,22 @@
             <div class="form-group has-feedback">
                 <input id="iNameOrCode" type="search" class="form-control" placeholder="Type a name or an IMDB code" />
                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
+
+                <br>
+
+                <div id="dropdownMenuType" data-selected-option="" class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Type: <span id='sDropdownMenuTypeSelectedOption'>Everything</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuType">
+                        <li><a data-type="">Everything</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a data-type="movie">Films</a></li>
+                        <li><a data-type="series">Series</a></li>
+                        <li><a data-type="episode">Episodes</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -34,6 +50,13 @@
 
     var loading_icon_html = '<div class="loading text-center"><span class="fa fa-circle-o-notch fa-spin fa-2x"></span></div>';
 
+    $('#dropdownMenuType ul > li > a').on('click', function () {
+        $('#sDropdownMenuTypeSelectedOption').text($(this).text());
+        $('#sDropdownMenuTypeSelectedOption').attr('data-selected-option', $(this).attr('data-type'));
+
+        $('#iNameOrCode').trigger('input');
+    });
+
     $('#iNameOrCode').on('input', function () {
         clearTimeout(window.timeout_to_start_search);
         findFilmsAndShows(1); // open first page if there are results
@@ -43,7 +66,6 @@
     $(window).scroll(function(){
         if($(window).scrollTop() == $(document).height() - $(window).height()) {
             $('.next-page').trigger('click');
-            console.log('triggered!');
         }
     });
 
@@ -54,6 +76,11 @@
             params.v    = 1; // OMDB API version
             params.s    = $('#iNameOrCode').val();
             params.page = page;
+
+            /* Security check that the provided type is allowed */
+            if($.inArray($('#sDropdownMenuTypeSelectedOption').attr('data-selected-option'), ['movie', 'series', 'episode']) !== -1) {
+                params.type = $('#sDropdownMenuTypeSelectedOption').attr('data-selected-option');
+            }
 
             var params_in_url_format = '?' + $.param(params);
 
@@ -96,8 +123,6 @@
                             });
                         } else {
                             $.post('/showResults/', result, function(data) {
-                                console.log(page);
-
                                 /* check if there was anything found and there is more than 1 page */
                                 if(result.Response === 'True') {
                                     /* remove the loading circle - we do not need to do that on page 1 as it overwrites it */
