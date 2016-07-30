@@ -29,10 +29,6 @@
     </div>
 @endsection
 
-@section('additionalScripts')
-    {{ Html::script('/js/jquery.twbsPagination.min.js') }}
-@endsection
-
 @section('documentReadyJquery')
     @parent
 

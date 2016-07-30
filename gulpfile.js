@@ -17,6 +17,5 @@ elixir(function(mix) {
     mix.sass('app.scss')
         .copy(modulesPath + 'bootstrap-sass/assets/fonts', 'public/fonts')
         .copy(modulesPath + 'bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js')
-        .copy(modulesPath + 'font-awesome/fonts', 'public/fonts')
-        .copy(modulesPath + 'twbs-pagination/jquery.twbsPagination.min.js', 'public/js');
+        .copy(modulesPath + 'font-awesome/fonts', 'public/fonts');
 });
