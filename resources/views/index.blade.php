@@ -156,7 +156,7 @@
             window.timeout_to_start_search = setTimeout(function() {
                 window.film_search_ajax = $.ajax({
                     type: 'GET',
-                    url: 'http://www.omdbapi.com/' + params_in_url_format,
+                    url: 'https://www.omdbapi.com/' + params_in_url_format,
                     dataType: 'json',
                     beforeSend: function () {
                         /* remove load more content button */
@@ -273,7 +273,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: 'http://www.omdbapi.com/' + params_in_url_format,
+                url: 'https://www.omdbapi.com/' + params_in_url_format,
                 dataType: 'json',
                 beforeSend: function () {
                     /* show loading icon */
