@@ -1,23 +1,19 @@
 @if (Request::input('Response') === 'True')
 	<div class="panel panel-default">
-		<table class="table table-striped">
-			@foreach (Request::input('Search') as $film)
-				<tr>
-					<td>
-						Title: {{ $film['Title'] }} @if ($film['Type'] === 'series') (TV Series) @endif
-						<br>
-						Year: {{ $film['Year'] }}
-					</td>
-				</tr>
-			@endforeach
+		<table class="table table-striped search-results">
+			<tbody>
+				@foreach (Request::input('Search') as $film)
+					<tr>
+						<td>
+							Title: {{ $film['Title'] }} @if ($film['Type'] === 'series') (TV Series) @endif
+							<br>
+							Year: {{ $film['Year'] }}
+						</td>
+					</tr>
+				@endforeach
+			</tbody>
 		</table>
 	</div>
-
-	@if (Request::input('totalResults') > 10)
-		<div class="text-center">
-			<div class="pagination"></div>
-		</div>
-	@endif
 @elseif (Request::input('Response') === 'False' && Request::input('Error') === 'Movie not found!')
 	<div class="alert alert-info text-center" role="alert">
 		Nothing found.
