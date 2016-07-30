@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <title>@yield('title')</title>
 
         <link href="/css/app.css" rel="stylesheet">
         <style type="text/css">
             @yield('css')
         </style>
-
     </head>
     <body>
         <div class="container">
@@ -20,6 +21,13 @@
 
         <script>
             $(document).ready(function() {
+
+                /* Laravel specific, making AJAX queries work */
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 @yield('documentReadyJquery');
             });
         </script>
