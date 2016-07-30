@@ -157,7 +157,7 @@
                 window.film_search_ajax = $.ajax({
                     type: 'GET',
                     url: 'https://www.omdbapi.com/' + params_in_url_format,
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     beforeSend: function () {
                         /* remove load more content button */
                         $('.next-page').off('click').hide();
@@ -274,7 +274,7 @@
             $.ajax({
                 type: 'GET',
                 url: 'https://www.omdbapi.com/' + params_in_url_format,
-                dataType: 'json',
+                dataType: 'jsonp',
                 beforeSend: function () {
                     /* show loading icon */
                     $('#' + imdb_id + ' > .panel-body').prepend(loading_icon_html);
