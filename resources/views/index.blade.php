@@ -250,7 +250,6 @@
                     var film = $('#' + imdb_id + ' > .panel-body');
 
                     film.find('.film-info-actors').text(result.Actors);
-                    film.find('.film-info-awards').text(result.Awards);
                     film.find('.film-info-box-office').text(result.BoxOffice);
                     film.find('.film-info-country').text(result.Country);
                     film.find('.film-info-dvd').text(result.DVD);
@@ -267,18 +266,35 @@
                     film.find('.film-info-writer').text(result.Writer);
                     film.find('.film-info-imdb-rating').text(result.imdbRating);
                     film.find('.film-info-imdb-votes').text(result.imdbVotes);
-                    film.find('.film-info-tomato-consensus').text(result.tomatoConsensus);
-                    film.find('.film-info-tomato-fresh').text(result.tomatoFresh);
-                    film.find('.film-info-tomato-image').text(result.tomatoImage);
-                    film.find('.film-info-tomato-meter').text(result.tomatoMeter);
-                    film.find('.film-info-tomato-rating').text(result.tomatoRating);
-                    film.find('.film-info-tomato-reviews').text(result.tomatoReviews);
-                    film.find('.film-info-tomato-rotten').text(result.tomatoRotten);
-                    film.find('.film-info-tomato-url').text(result.tomatoUrl);
-                    film.find('.film-info-tomato-user-meter').text(result.tomatoUserMeter);
-                    film.find('.film-info-tomato-user-rating').text(result.tomatoUserRating);
-                    film.find('.film-info-tomato-user-reviews').text(result.tomatoUserReviews);
                     film.find('.film-info-seasons').text(result.totalSeasons);
+
+                    if(result.Awards !== 'N/A') {
+                        film.find('.film-info-awards').text(result.Awards);
+                        film.find('.film-trophies').show();
+                    }
+
+                    if(result.tomatoURL !== 'N/A') {
+                        film.find('.film-info-tomato-url').attr('href', result.tomatoURL);
+
+                        film.find('.film-info-tomato-consensus').text(result.tomatoConsensus);
+                        film.find('.film-info-tomato-fresh').text(result.tomatoFresh);
+                        film.find('.film-info-tomato-image').text(result.tomatoImage);
+                        film.find('.film-info-tomato-meter').text(result.tomatoMeter);
+                        film.find('.film-info-tomato-rating').text(result.tomatoRating);
+                        film.find('.film-info-tomato-reviews').text(result.tomatoReviews);
+                        film.find('.film-info-tomato-rotten').text(result.tomatoRotten);
+
+                        film.find('.film-info-tomato-user-meter').text(result.tomatoUserMeter);
+                        film.find('.film-info-tomato-user-rating').text(result.tomatoUserRating);
+                        film.find('.film-info-tomato-user-reviews').text(result.tomatoUserReviews);
+
+                        film.find('.vegetable-section').show();
+                    }
+
+
+                    if(result.imdbRating !== 'N/A') {
+                        film.find('.film-info-imdb-rating-progress-bar').attr('aria-valuenow', result.imdbRating).css('width', (result.imdbRating * 10) + '%');
+                    }
 
                     film.find('.loading').remove();
                     film.find('.film-info').css('visibility', 'visible');
