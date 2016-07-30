@@ -23,9 +23,18 @@
     #searchResults .panel-default {
         background-color: #fff;
         padding: 5px;
+        border-radius: 0;
     }
 
     #searchResults .panel-default.active {
+        background-color: #eff0f1;
+    }
+
+    #searchResults .panel-default > a:hover {
+        text-decoration: none;
+    }
+
+    #searchResults .panel-default:hover {
         background-color: #eff0f1;
     }
 
