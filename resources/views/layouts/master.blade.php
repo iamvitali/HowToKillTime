@@ -4,6 +4,10 @@
         <title>@yield('title')</title>
 
         <link href="/css/app.css" rel="stylesheet">
+        <style type="text/css">
+            @yield('css')
+        </style>
+
     </head>
     <body>
         <div class="container">

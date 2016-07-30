@@ -2,6 +2,21 @@
 
 @section('title', 'Let\'s Find that film!')
 
+@section('css')
+    #backgroundIconYear {
+        margin-top: 8.5px; /* fixes fa icon not being vertically centered */
+        z-index: 3; /* fixes icon disappearing on input being focused */
+    }
+
+    #dYearBox {
+        display: block; /* fixes incorrect sizing of the year input box */
+    }
+
+    #iYear {
+        border-radius: 4px; /* fixes square corners on the right */
+    }
+@endsection
+
 @section('content')
     <h1 class="text-center">Let's find that film!</h1>
 
@@ -12,20 +27,30 @@
                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
 
                 <br>
-
-                <div id="dropdownMenuType" data-selected-option="" class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Type: <span id='sDropdownMenuTypeSelectedOption'>Everything</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuType">
-                        <li><a data-type="">Everything</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a data-type="movie">Films</a></li>
-                        <li><a data-type="series">Series</a></li>
-                        <li><a data-type="episode">Episodes</a></li>
-                    </ul>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-4 col-lg-offset-2">
+                        <div id="dropdownMenuType" data-selected-option="" class="dropdown">
+                            <button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Type: <span id='sDropdownMenuTypeSelectedOption'>Everything</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuType">
+                                <li><a data-type="">Everything</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a data-type="movie">Films</a></li>
+                                <li><a data-type="series">Series</a></li>
+                                <li><a data-type="episode">Episodes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-4">
+                        <div id="dYearBox" class="input-group">
+                            <input id="iYear" type="text" class="form-control" placeholder="Year">
+                            <span id='backgroundIconYear' class="fa fa-calendar form-control-feedback"></span>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -57,7 +82,7 @@
         $('#iNameOrCode').trigger('input');
     });
 
-    $('#iNameOrCode').on('input', function () {
+    $('#iNameOrCode, #iYear').on('input', function () {
         clearTimeout(window.timeout_to_start_search);
         findFilmsAndShows(1); // open first page if there are results
     });
@@ -71,6 +96,15 @@
 
     function findFilmsAndShows(page) {
         if($('#iNameOrCode').val()) {
+
+            /* Check if Year field is empty or has 4 digits */
+            if(!/^$|^\d{4}$/.test($('#iYear').val())) {
+                clearResults();
+                var error_message = 'Please enter the year using 4 digits, for example: 2015<br>Or you can also leave it empty.';
+                $('#results').html('<div class="alert alert-warning text-center" role="alert">' + error_message + '</div>');
+                return;
+            }
+
             var params = {};
             params.r    = 'json';
             params.v    = 1; // OMDB API version
@@ -80,6 +114,11 @@
             /* Security check that the provided type is allowed */
             if($.inArray($('#sDropdownMenuTypeSelectedOption').attr('data-selected-option'), ['movie', 'series', 'episode']) !== -1) {
                 params.type = $('#sDropdownMenuTypeSelectedOption').attr('data-selected-option');
+            }
+
+            /* Only specifying the year if it was provided by the user */
+            if(/^\d{4}$/.test($('#iYear').val())) {
+                params.y = $('#iYear').val();
             }
 
             var params_in_url_format = '?' + $.param(params);
@@ -158,14 +197,20 @@
                 });
             }, 300);
         } else {
-            /* Cancel ajax request if it's still processing */
-            window.film_search_ajax.abort();
-
-            /* Empty the results section */
-            $('#results').html('');
-
-            /* remove load more content button */
-            $('.next-page').off('click').hide();
+            clearResults();
         }
+    }
+
+    function clearResults() {
+        /* Cancel ajax request if it's still processing */
+        if(typeof window.film_search_ajax != 'undefined') {
+            window.film_search_ajax.abort();
+        }
+
+        /* Empty the results section */
+        $('#results').html('');
+
+        /* remove load more content button */
+        $('.next-page').off('click').hide();
     }
 @endsection
